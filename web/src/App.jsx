@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -10,10 +10,15 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard.jsx";
-function App() {
+
+function Layout() {
+  const location = useLocation();
+
+  const hideNavbarRoutes = ["/dashboard", "/admin"];
+
   return (
-    <Router>
-      <Navbar />
+    <>
+      {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -27,7 +32,15 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
 
-      <Footer />
+      {!hideNavbarRoutes.includes(location.pathname) && <Footer />}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Layout />
     </Router>
   );
 }
